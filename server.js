@@ -9,7 +9,7 @@ const { cookieToJson } = require('./util/index')
 const fileUpload = require('express-fileupload')
 const decode = require('safe-decode-uri-component')
 const match = require('@unblockneteasemusic/server')
-
+const axios = require('axios')
 /**
  * The version check result.
  * @readonly
@@ -285,6 +285,17 @@ async function consturctServer(moduleDefs) {
       const result = await match(trackId, ['qq', 'kuwo', 'migu'])
       const re = { code: 200, data: result }
       res.send(JSON.stringify(re))
+    } catch (e) {
+      res.sendStatus(500)
+    }
+  })
+  app.use('/wallhaven/search', async (req, res) => {
+    const { query: params } = req
+    try {
+      const { data } = await axios.get('https://wallhaven.cc/api/v1/search', {
+        params,
+      })
+      res.send(JSON.stringify({ data, code: 200 }))
     } catch (e) {
       res.sendStatus(500)
     }
