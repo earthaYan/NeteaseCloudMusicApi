@@ -1,0 +1,34 @@
+name: Package NodeJs Bundle
+
+on:
+  push:
+    branches:
+      - v-player
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        arch:
+          - x64
+          - arm64
+        node-version:
+          - node16
+        os:
+          - linux
+          - macos
+          - win
+    steps:
+      - name: Checkout action code
+        uses: actions/checkout@v2
+      - name: Package into node binary
+        uses: ./
+        with:
+          entrypoint: app.js
+          arch: ${{ matrix.arch }}
+          node-version: ${{ matrix.node-version }}
+          os: ${{ matrix.os }}
