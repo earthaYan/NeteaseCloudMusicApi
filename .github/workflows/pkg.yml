@@ -23,6 +23,8 @@ jobs:
           - macos
           - win
     steps:
+      - name: Checkout action code
+        uses: actions/checkout@v2
       - name: Package into node binary
         uses: ./
         with:
