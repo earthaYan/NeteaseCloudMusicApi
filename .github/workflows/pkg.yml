@@ -24,7 +24,7 @@ jobs:
           - win
     steps:
       - name: Package into node binary
-        uses: lando/pkg-action@v2
+        uses: ./
         with:
           entrypoint: app.js
           arch: ${{ matrix.arch }}
