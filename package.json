@@ -13,6 +13,7 @@
   "pkg": {
     "scripts": "module/*.js",
     "assets": [
+      "/node_modules/axios/dist/node/axios.cjs",
       "/node_modules/vm2/lib/contextify.js",
       "/node_modules/vm2/lib/setup-sandbox.js",
       "/public"
