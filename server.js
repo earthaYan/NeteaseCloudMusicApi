@@ -281,8 +281,8 @@ async function consturctServer(moduleDefs) {
   }
   app.use('/unlockmusic', async (req, res) => {
     try {
-      const trackId = req.query.id
-      const result = await match(trackId, ['qq', 'kuwo', 'migu'])
+      const {id: trackId, source = 'kugou,kuwo,migu'} = req.query
+      const result = await match(trackId, source.split(','))
       const re = { code: 200, data: result }
       res.send(JSON.stringify(re))
     } catch (e) {
