@@ -10,6 +10,7 @@ const fileUpload = require('express-fileupload')
 const decode = require('safe-decode-uri-component')
 const match = require('@unblockneteasemusic/server')
 const axios = require('axios')
+const { URL } = require("url");
 /**
  * The version check result.
  * @readonly
@@ -291,9 +292,22 @@ async function consturctServer(moduleDefs) {
   })
   app.use('/wallhaven/search', async (req, res) => {
     const { query: params } = req
+    const proxy = {}
+    if (params.proxy) {
+      const purl = new URL(params.proxy)
+      if (purl.hostname) {
+        proxy.host = purl.hostname
+        proxy.port = purl.port
+        proxy.protocol = purl.protocol
+        console.log('[wallhaven] use proxy to search wallhaven pictures', proxy)
+      } else {
+        console.error('[wallhaven] wallhaven 代理配置无效,不使用代理')
+      }
+    }
     try {
       const { data } = await axios.get('https://wallhaven.cc/api/v1/search', {
         params,
+        proxy,
       })
       res.send(JSON.stringify({ data, code: 200 }))
     } catch (e) {
